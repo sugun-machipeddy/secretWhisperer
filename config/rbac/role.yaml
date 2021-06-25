@@ -1,0 +1,47 @@
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - events
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - shipyard.shipyard.dev
+  resources:
+  - whisperers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - shipyard.shipyard.dev
+  resources:
+  - whisperers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - shipyard.shipyard.dev
+  resources:
+  - whisperers/status
+  verbs:
+  - get
+  - patch
+  - update

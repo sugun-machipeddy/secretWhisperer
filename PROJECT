@@ -1,0 +1,16 @@
+domain: shipyard.dev
+layout:
+- go.kubebuilder.io/v3
+projectName: sercretwhisperer
+repo: shipyard.dev/secretWhisperer
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: shipyard.dev
+  group: shipyard
+  kind: Whisperer
+  path: shipyard.dev/secretWhisperer/api/v1beta1
+  version: v1beta1
+version: "3"

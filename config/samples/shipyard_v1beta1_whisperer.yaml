@@ -1,0 +1,7 @@
+apiVersion: shipyard.shipyard.dev/v1beta1
+kind: Whisperer
+metadata:
+  name: whisperer-sample
+spec:
+  # Add fields here
+  foo: bar
