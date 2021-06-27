@@ -29,7 +29,8 @@ type WhispererSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Whisperer. Edit whisperer_types.go to remove/update
-	SecretName string `json:"secretName,omitempty"`
+	SecretName    string `json:"secretName,omitempty"`
+	NamespaceName string `json:"namespaceName,omitempty"`
 }
 
 // WhispererStatus defines the observed state of Whisperer
@@ -39,7 +40,8 @@ type WhispererStatus struct {
 }
 
 //+kubebuilder:object:root=true
-//+kubebuilder:subresource:status
+//+kubebuilder:subresource:
+//+kubebuilder:resource:scope=Cluster
 
 // Whisperer is the Schema for the whisperers API
 type Whisperer struct {

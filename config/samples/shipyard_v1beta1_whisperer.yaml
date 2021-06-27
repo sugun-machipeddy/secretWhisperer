@@ -4,4 +4,5 @@ metadata:
   name: whisperer-sample
 spec:
   # Add fields here
-  foo: bar
+  secretName: tin-tin
+  namespaceName: example

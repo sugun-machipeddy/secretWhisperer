@@ -14,7 +14,7 @@ spec:
     listKind: WhispererList
     plural: whisperers
     singular: whisperer
-  scope: Namespaced
+  scope: Cluster
   versions:
   - name: v1beta1
     schema:
@@ -36,6 +36,8 @@ spec:
           spec:
             description: WhispererSpec defines the desired state of Whisperer
             properties:
+              namespaceName:
+                type: string
               secretName:
                 description: Foo is an example field of Whisperer. Edit whisperer_types.go
                   to remove/update
@@ -47,8 +49,6 @@ spec:
         type: object
     served: true
     storage: true
-    subresources:
-      status: {}
 status:
   acceptedNames:
     kind: ""

@@ -18,8 +18,9 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/go-logr/logr"
+	//"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -35,7 +36,7 @@ import (
 type WhispererReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
-	Log    logr.Logger
+	//Log    logr.Logger
 }
 
 //+kubebuilder:rbac:groups=shipyard.shipyard.dev,resources=whisperers,verbs=get;list;watch;create;update;patch;delete
@@ -53,12 +54,12 @@ type WhispererReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.8.3/pkg/reconcile
 func (r *WhispererReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	log := r.Log.WithValues("Whisperer")
+	//log := r.Log.WithValues("Whisperer", req.Name)
 
 	// your logic here
 	ws := &shipyardv1beta1.Whisperer{}
 	if err := r.Client.Get(ctx, req.NamespacedName, ws); err != nil {
-		log.Error(err, "failed to get whisperer resource")
+		//log.Error(err, "failed to get whisperer resource")
 		// Ignore NotFound errors as they will be retried automatically if the
 		// resource is created in future.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
@@ -67,10 +68,10 @@ func (r *WhispererReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	cert_secret := &corev1.Secret{}
 	err := r.Client.Get(ctx, client.ObjectKey{
 		Name:      ws.Spec.SecretName,
-		Namespace: req.Namespace,
+		Namespace: ws.Spec.NamespaceName,
 	}, cert_secret)
 	if err != nil {
-		log.Error(err, "failed to get secret resource in the namespace")
+		//log.Error(err, "failed to get secret resource in the namespace")
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
@@ -84,6 +85,7 @@ func (r *WhispererReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	}
 
 	_, err = controllerutil.CreateOrPatch(ctx, r.Client, istio_secret, func() error {
+		fmt.Printf("creating the secret in istio-system")
 		if istio_secret.Labels == nil {
 			istio_secret.Labels = make(map[string]string)
 		}
@@ -92,7 +94,7 @@ func (r *WhispererReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 		return controllerutil.SetControllerReference(ws, istio_secret, r.Scheme)
 	})
 	if err != nil {
-		log.Error(err, "unable to create or update secret")
+		//log.Error(err, "unable to create or update secret")
 		return ctrl.Result{}, err
 	}
 
